@@ -3,34 +3,34 @@ name: plouf
 on: [push, pull_request]
 
 jobs:
-  - job: essai
-    runs-on: macos-latest
-    variables:
-      marc: cool
-    steps:
-      - name: make it uni
-        run: |
-          env | grep -i marc
-          echo MARC is $MARC
-          dfgdfgdfg
-          brew update || true
-          mkdir deps-amd64
-          cd deps-amd64
-          tar xf "`brew fetch --bottle-tag=big_sur gmp        | sed -ne 's/^Downloaded to: //p'`"
-          tar xf "`brew fetch --bottle-tag=big_sur mpfr       | sed -ne 's/^Downloaded to: //p'`"
-          cd ..
-          mkdir deps-arm64
-          cd deps-arm64
-          tar xf "`brew fetch --bottle-tag=arm64_big_sur gmp  | sed -ne 's/^Downloaded to: //p'`"
-          tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
-          cd ..
-          ls deps-*/*/*/lib
-          mkdir -p deps-uni/lib
-          for A in gmp mpfr; do
-            for X in deps-amd64/$A/*/lib/lib*; do
-              Y=`basename $X`
-              lipo -create $X deps-arm64/$A/*/lib/$Y -output deps-uni/lib/$Y
-            done
+- job: essai
+  runs-on: macos-latest
+  variables:
+    marc: cool
+  steps:
+    - name: make it uni
+      run: |
+        env | grep -i marc
+        echo MARC is $MARC
+        dfgdfgdfg
+        brew update || true
+        mkdir deps-amd64
+        cd deps-amd64
+        tar xf "`brew fetch --bottle-tag=big_sur gmp        | sed -ne 's/^Downloaded to: //p'`"
+        tar xf "`brew fetch --bottle-tag=big_sur mpfr       | sed -ne 's/^Downloaded to: //p'`"
+        cd ..
+        mkdir deps-arm64
+        cd deps-arm64
+        tar xf "`brew fetch --bottle-tag=arm64_big_sur gmp  | sed -ne 's/^Downloaded to: //p'`"
+        tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
+        cd ..
+        ls deps-*/*/*/lib
+        mkdir -p deps-uni/lib
+        for A in gmp mpfr; do
+          for X in deps-amd64/$A/*/lib/lib*; do
+            Y=`basename $X`
+            lipo -create $X deps-arm64/$A/*/lib/$Y -output deps-uni/lib/$Y
           done
-          ls deps-uni/lib
-          file deps-uni/lib/*
+        done
+        ls deps-uni/lib
+        file deps-uni/lib/*
