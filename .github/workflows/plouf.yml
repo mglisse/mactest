@@ -9,5 +9,26 @@ jobs:
       - name: make it uni
         run: |
           brew update || true
-          brew fetch --bottle-tag=big_sur --deps mpfr
-          brew fetch --bottle-tag=arm64_big_sur --deps mpfr
+          MPFR_AMD64="`brew fetch --bottle-tag=big_sur mpfr       | sed -ne 's/^Downloaded to: //p'`"
+          GMP_AMD64 ="`brew fetch --bottle-tag=big_sur gmp        | sed -ne 's/^Downloaded to: //p'`"
+          MPFR_ARM64="`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
+          GMP_ARM64 ="`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
+          mkdir deps-amd64
+          cd deps-amd64
+          tar xf $GMP_AMD64
+          tar xf $MPFR_AMD64
+          cd ..
+          mkdir deps-arm64
+          cd deps-arm64
+          tar xf $GMP_ARM64
+          tar xf $MPFR_ARM64
+          cd ..
+          mkdir -p deps-uni/lib
+          for A in gmp mpfr; do
+            for X in deps-amd64/mpfr/*/lib/lib*; do
+              Y=`basename $X`
+              lipo -create $X deps-arm64/mpfr/*/lib/$Y -output deps-uni/lib/$Y
+            done
+          done
+          ls deps-uni/lib
+          file deps-uni/lib/*
