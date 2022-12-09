@@ -9,25 +9,21 @@ jobs:
       - name: make it uni
         run: |
           brew update || true
-          export MPFR_AMD64="`brew fetch --bottle-tag=big_sur mpfr       | sed -ne 's/^Downloaded to: //p'`"
-          export  GMP_AMD64="`brew fetch --bottle-tag=big_sur gmp        | sed -ne 's/^Downloaded to: //p'`"
-          export MPFR_ARM64="`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
-          export  GMP_ARM64="`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
           mkdir deps-amd64
           cd deps-amd64
-          tar xf $GMP_AMD64
-          tar xf $MPFR_AMD64
+          tar xf "`brew fetch --bottle-tag=big_sur gmp        | sed -ne 's/^Downloaded to: //p'`"
+          tar xf "`brew fetch --bottle-tag=big_sur mpfr       | sed -ne 's/^Downloaded to: //p'`"
           cd ..
           mkdir deps-arm64
           cd deps-arm64
-          tar xf $GMP_ARM64
-          tar xf $MPFR_ARM64
+          tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
+          tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
           cd ..
           mkdir -p deps-uni/lib
           for A in gmp mpfr; do
-            for X in deps-amd64/mpfr/*/lib/lib*; do
+            for X in deps-amd64/$A/*/lib/lib*; do
               Y=`basename $X`
-              lipo -create $X deps-arm64/mpfr/*/lib/$Y -output deps-uni/lib/$Y
+              lipo -create $X deps-arm64/$A/*/lib/$Y -output deps-uni/lib/$Y
             done
           done
           ls deps-uni/lib
