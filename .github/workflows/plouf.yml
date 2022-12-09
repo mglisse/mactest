@@ -19,6 +19,7 @@ jobs:
           tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
           tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
           cd ..
+          ls deps-*/*/*/lib
           mkdir -p deps-uni/lib
           for A in gmp mpfr; do
             for X in deps-amd64/$A/*/lib/lib*; do
