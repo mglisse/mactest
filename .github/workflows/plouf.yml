@@ -3,14 +3,14 @@ name: plouf
 on: [push, pull_request]
 
 jobs:
-  build:
+  - job: essai
     runs-on: macos-latest
     variables:
-      MARC: cool
+      marc: cool
     steps:
       - name: make it uni
         run: |
-          env | grep MARC
+          env | grep -i marc
           echo MARC is $MARC
           dfgdfgdfg
           brew update || true
