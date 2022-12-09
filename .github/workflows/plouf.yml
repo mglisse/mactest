@@ -16,7 +16,7 @@ jobs:
           cd ..
           mkdir deps-arm64
           cd deps-arm64
-          tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
+          tar xf "`brew fetch --bottle-tag=arm64_big_sur gmp  | sed -ne 's/^Downloaded to: //p'`"
           tar xf "`brew fetch --bottle-tag=arm64_big_sur mpfr | sed -ne 's/^Downloaded to: //p'`"
           cd ..
           ls deps-*/*/*/lib
