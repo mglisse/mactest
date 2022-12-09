@@ -5,9 +5,14 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: macos-latest
+    variables:
+      MARC: cool
     steps:
       - name: make it uni
         run: |
+          env | grep MARC
+          echo MARC is $MARC
+          dfgdfgdfg
           brew update || true
           mkdir deps-amd64
           cd deps-amd64
