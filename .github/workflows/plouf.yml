@@ -2,8 +2,8 @@ name: plouf
 
 on: [push, pull_request]
 
-variables:
-  marc: cool
+env:
+  MARC: cool
 
 jobs:
   build:
